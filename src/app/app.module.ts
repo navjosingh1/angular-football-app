@@ -6,13 +6,15 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './components/home/home.component';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AddHeaderInterceptor } from '../app/interceptor/add-header-interceptor.interceptor';
-import { StandingsComponent } from './components/standings/standings.component'
+import { StandingsComponent } from './components/standings/standings.component';
+import { TeamsComponent } from './components/teams/teams.component'
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
-    StandingsComponent
+    StandingsComponent,
+    TeamsComponent
   ],
   imports: [
     BrowserModule,

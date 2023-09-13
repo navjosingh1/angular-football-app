@@ -47,9 +47,33 @@ export class FootballDataService {
   }
 
   getStandings(leagueId,season){
-    const params = new HttpParams()
-    .set('league', leagueId)
-    .set('season',season);
-    return this.http.get(`${environment.API_HOST_URL}/standings`,{params: params});
-  }
+    let standings = JSON.parse(window.localStorage.getItem('standings'));
+    if(standings){
+      return standings.standings[0];
+
+    }else{
+      const params = new HttpParams()
+      .set('league', leagueId)
+      .set('season',season);
+      this.http.get(`${environment.API_HOST_URL}/standings`,{params: params}).subscribe(data=>{
+         window.localStorage.setItem('standings', JSON.stringify(data['response'][0].league));
+        }
+      );
+  }}
+
+  getfixtures(currentSeason,leagueId,teamId){
+    let fixtures = JSON.parse(window.localStorage.getItem('fixtures'));
+    if(fixtures){
+      return fixtures;
+
+    }else{
+      const params = new HttpParams()
+      .set('league',leagueId)
+      .set('season',currentSeason)
+      .set('team', teamId);
+      this.http.get(`${environment.API_HOST_URL}/fixtures`,{params: params}).subscribe(data=>{
+         window.localStorage.setItem('fixtures', JSON.stringify(data['response']));
+        }
+      );
+      }}
 }

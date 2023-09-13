@@ -1,0 +1,12 @@
+<div class="card" style="width:50rem;">
+    <div class="card-body">
+      <div class="card-text row" *ngFor="let fixture of fixtures">
+        <div class="col-md-1"><img [src]='fixture.teams.home.logo' style="width:20px;height:20px"/></div>
+        <div class="col-md-3">{{fixture.teams.home.name}}</div>
+        <div class="col-md-3">{{fixture.goals.home}} : {{fixture.goals.away}}</div>
+        <div class="col-md-3">{{fixture.teams.away.name}}</div>
+        <div class="col-md-1"><img [src]='fixture.teams.away.logo' style="width:20px;height:20px"/></div>
+      </div> 
+    </div>
+    <a href="#" class="btn btn-primary" style="width: 4rem;">Back</a>
+</div>

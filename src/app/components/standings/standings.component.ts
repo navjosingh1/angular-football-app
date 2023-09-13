@@ -13,42 +13,30 @@ import { TopLeagues } from 'src/constant';
 })
 export class StandingsComponent implements OnInit {
   leagueId: number;
+  leagueData;
+  standingsData;
 
   constructor(private footballDataService: FootballDataService,private route: ActivatedRoute) { }
 
   currentSeason = new Date().getFullYear();
   countryName = this.route.snapshot.params.countryName;
   standings = [];
+  leagueName = TopLeagues[this.countryName];
 
   ngOnInit(): void {
 
-    leagues.response.forEach(res=>{
-      if(res.league.name === TopLeagues[this.countryName]){
-        this.leagueId = res.league.id;
-      }
-    })
-   
-    // this.footballDataService.getStandings(this.leagueId,this.currentSeason).subscribe(results=>{
-    //   console.log(results);
-    // })
+    let country = JSON.parse(localStorage.getItem('country'));
 
-    standings.response.forEach(res=>{
-        this.standings = res.league.standings[0];
-        console.log(this.standings)
-    })
+    if(country){
+      this.leagueData = this.footballDataService.getLeaguesId(country.code, this.currentSeason, this.leagueName , this.countryName);
+      this.leagueId = this.leagueData[0].league.id;
+      localStorage.setItem('leagueId', JSON.stringify(this.leagueId));
+      this.getStandings();
+    }
   }
 
-  // showSelectedCountryStandings(country){
-  //   let currentSeason = new Date().getFullYear();
-  //   let countryName = country.name;
-  //   // this.leagueId = this.footballDataService.getLeaguesId(country.code, currentSeason, TopLeagues[countryName], countryName).map(res=>{
-  //   //   return res.leagues;
-  //   // })
-
- 
-
-  //   console.log(this.leagueId);
-    
-  // }
+  getStandings(){
+    this.standings = this.footballDataService.getStandings(this.leagueId,this.currentSeason);
+  }
 
 }
