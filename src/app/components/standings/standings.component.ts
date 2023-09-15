@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { FootballDataService } from 'src/app/services/football-data.service';
+import { FootballDataService } from '../../services/football-data.service';
 import { Country } from '../../interfaces/country';
 import { Standings } from '../../interfaces/standings';
-import { TopEuropeanLeagues, StandingsConst } from 'src/assets/constant';
-import { CommonChecksService } from 'src/app/services/common-checks.service';
+import { TopEuropeanLeagues, StandingsConst } from '../../../assets/constant';
+import { CommonChecksService } from '../../services/common-checks.service';
 
 @Component({
   selector: 'app-standings',
@@ -11,12 +11,11 @@ import { CommonChecksService } from 'src/app/services/common-checks.service';
   styleUrls: ['./standings.component.css'],
 })
 export class StandingsComponent implements OnInit {
-  countriesList: Country[]=[];
+  countriesList: Country[] = [];
   selectedCountryName: string;
-  errorMessage = "";
-  leagueStandingsList: Standings[]=[];
+  errorMessage = '';
+  leagueStandingsList: Standings[] = [];
   selectedCountry: Country;
-
 
   readonly STANDING_CONSTANT = StandingsConst;
   currentSeason: number = new Date().getFullYear();
@@ -24,7 +23,7 @@ export class StandingsComponent implements OnInit {
   constructor(
     private footballDataService: FootballDataService,
     private commonChecksService: CommonChecksService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     let countries = JSON.parse(window.localStorage.getItem('countries')) || [];
@@ -40,15 +39,17 @@ export class StandingsComponent implements OnInit {
    * get Top Leagues Countries List
    */
   getTopLeagueCountries() {
-    this.footballDataService.getCountries().subscribe((data) => {
-      this.countriesList = data['response'].filter((country: Country) => {
-        return Object.keys(TopEuropeanLeagues).indexOf(country.name) !== -1;
-      });
-      localStorage.setItem('countries', JSON.stringify(this.countriesList));
-      this.loadLeagueStandings();
-    }, (error) => {
-      this.errorMessage = error;
-    }
+    this.footballDataService.getCountries().subscribe(
+      (data) => {
+        this.countriesList = data['response'].filter((country: Country) => {
+          return Object.keys(TopEuropeanLeagues).indexOf(country.name) !== -1;
+        });
+        localStorage.setItem('countries', JSON.stringify(this.countriesList));
+        this.loadLeagueStandings();
+      },
+      (error) => {
+        this.errorMessage = error;
+      }
     );
   }
 
@@ -56,7 +57,9 @@ export class StandingsComponent implements OnInit {
    * load initial league standings
    */
   loadLeagueStandings() {
-    let selectedCountryItem = JSON.parse(localStorage.getItem('selectedCountry'));
+    let selectedCountryItem = JSON.parse(
+      localStorage.getItem('selectedCountry')
+    );
     this.selectedCountry = selectedCountryItem
       ? selectedCountryItem
       : this.countriesList[0];
@@ -75,23 +78,27 @@ export class StandingsComponent implements OnInit {
     this.selectedCountryName = country.name;
 
     this.selectedCountry = country;
-    localStorage.setItem('selectedCountry',JSON.stringify(this.selectedCountry));
+    localStorage.setItem(
+      'selectedCountry',
+      JSON.stringify(this.selectedCountry)
+    );
 
-    let leagueLocalId = JSON.parse(localStorage.getItem(`TopleagueId_${country.name}`))|| null;
+    let leagueLocalId =
+      JSON.parse(localStorage.getItem(`TopleagueId_${country.name}`)) || null;
 
     if (this.commonChecksService.isNotNull(leagueLocalId)) {
       this.getStandings(leagueLocalId, this.currentSeason);
     } else {
-      this.getLeagueId(country,leagueLocalId);
+      this.getLeagueId(country, leagueLocalId);
     }
   }
 
   /**
    * getting league Id based on selected country name & code
-   * @param country 
-   * @param leagueLocalId 
+   * @param country
+   * @param leagueLocalId
    */
-  getLeagueId(country: Country,leagueLocalId: number){
+  getLeagueId(country: Country, leagueLocalId: number) {
     let leagueName = TopEuropeanLeagues[country.name];
     this.footballDataService
       .getLeaguesId(country.code, this.currentSeason, leagueName, country.name)
@@ -112,8 +119,8 @@ export class StandingsComponent implements OnInit {
 
   /**
    * get leagues standings data on basis of leagueID & current season
-   * @param leagueId 
-   * @param currentSeason 
+   * @param leagueId
+   * @param currentSeason
    */
   getStandings(leagueId: number, currentSeason: number) {
     let standingsData =
@@ -141,5 +148,4 @@ export class StandingsComponent implements OnInit {
       );
     }
   }
-  
 }
