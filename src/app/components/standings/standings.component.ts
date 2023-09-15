@@ -75,21 +75,19 @@ export class StandingsComponent implements OnInit {
    * @param country
    */
   getCountriesData(country: Country) {
-    this.selectedCountryName = country.name;
+    if(country){
+      this.selectedCountryName = country?.name;
 
-    this.selectedCountry = country;
-    localStorage.setItem(
-      'selectedCountry',
-      JSON.stringify(this.selectedCountry)
-    );
+      this.selectedCountry = country;
+      localStorage.setItem('selectedCountry',JSON.stringify(this.selectedCountry));
 
-    let leagueLocalId =
-      JSON.parse(localStorage.getItem(`TopleagueId_${country.name}`)) || null;
+      let leagueLocalId = JSON.parse(localStorage.getItem(`TopleagueId_${country.name}`))|| null;
 
-    if (this.commonChecksService.isNotNull(leagueLocalId)) {
-      this.getStandings(leagueLocalId, this.currentSeason);
-    } else {
-      this.getLeagueId(country, leagueLocalId);
+      if (this.commonChecksService.isNotNull(leagueLocalId)) {
+        this.getStandings(leagueLocalId, this.currentSeason);
+      } else {
+        this.getLeagueId(country,leagueLocalId);
+      }
     }
   }
 
