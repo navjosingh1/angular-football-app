@@ -58,16 +58,17 @@ export class StandingsComponent implements OnInit {
   loadLeagueStandings() {
     let selectedCountryItem =
       JSON.parse(localStorage.getItem('selectedCountry')) || null;
-    if (this.commonChecksService.isNotNull(selectedCountryItem)) {
-      this.selectedCountry = selectedCountryItem
-        ? selectedCountryItem
-        : this.countriesList[0];
-      localStorage.setItem(
-        'selectedCountry',
-        JSON.stringify(this.selectedCountry)
-      );
-      this.getCountriesData(this.selectedCountry);
-    }
+
+    this.selectedCountry = this.commonChecksService.isNotNullOrUndefined(
+      selectedCountryItem
+    )
+      ? selectedCountryItem
+      : this.countriesList[0];
+    localStorage.setItem(
+      'selectedCountry',
+      JSON.stringify(this.selectedCountry)
+    );
+    this.getCountriesData(this.selectedCountry);
   }
 
   /**
