@@ -39,18 +39,17 @@ export class StandingsComponent implements OnInit {
    * get Top Leagues Countries List
    */
   getTopLeagueCountries() {
-    this.footballDataService.getCountries().subscribe(
-      (data) => {
+    this.footballDataService.getCountries().subscribe((data) => {
+      if (this.commonChecksService.isPopulatedArray(data['response'])) {
         this.countriesList = data['response'].filter((country: Country) => {
           return Object.keys(TopEuropeanLeagues).indexOf(country.name) !== -1;
         });
         localStorage.setItem('countries', JSON.stringify(this.countriesList));
         this.loadLeagueStandings();
-      },
-      (error) => {
-        this.errorMessage = error;
+      } else {
+        this.errorMessage = data['errors']?.requests;
       }
-    );
+    });
   }
 
   /**
@@ -76,7 +75,7 @@ export class StandingsComponent implements OnInit {
    * @param country
    */
   getCountriesData(country: Country) {
-    if (country) {
+    if (this.commonChecksService.isNotNullOrUndefined(country)) {
       this.selectedCountryName = country?.name;
 
       this.selectedCountry = country;
@@ -105,19 +104,18 @@ export class StandingsComponent implements OnInit {
     let leagueName = TopEuropeanLeagues[country.name];
     this.footballDataService
       .getLeaguesId(country.code, this.currentSeason, leagueName, country.name)
-      .subscribe(
-        (data) => {
+      .subscribe((data) => {
+        if (this.commonChecksService.isPopulatedArray(data['response'])) {
           leagueLocalId = data['response'][0]?.league.id;
           localStorage.setItem(
             `TopleagueId_${country.name}`,
             JSON.stringify(leagueLocalId)
           );
           this.getStandings(leagueLocalId, this.currentSeason);
-        },
-        (error) => {
-          this.errorMessage = error;
+        } else {
+          this.errorMessage = data['errors']?.requests;
         }
-      );
+      });
   }
 
   /**
@@ -134,8 +132,9 @@ export class StandingsComponent implements OnInit {
     if (this.commonChecksService.isPopulatedArray(standingsData)) {
       this.leagueStandingsList = standingsData;
     } else {
-      this.footballDataService.getStandings(leagueId, currentSeason).subscribe(
-        (data) => {
+      this.footballDataService
+        .getStandings(leagueId, currentSeason)
+        .subscribe((data) => {
           if (this.commonChecksService.isPopulatedArray(data['response'])) {
             this.leagueStandingsList =
               data['response'][0]?.league?.standings[0];
@@ -144,11 +143,7 @@ export class StandingsComponent implements OnInit {
               JSON.stringify(this.leagueStandingsList)
             );
           }
-        },
-        (error) => {
-          this.errorMessage = error;
-        }
-      );
+        });
     }
   }
 }
