@@ -57,17 +57,18 @@ export class StandingsComponent implements OnInit {
    * load initial league standings
    */
   loadLeagueStandings() {
-    let selectedCountryItem = JSON.parse(
-      localStorage.getItem('selectedCountry')
-    );
-    this.selectedCountry = selectedCountryItem
-      ? selectedCountryItem
-      : this.countriesList[0];
-    localStorage.setItem(
-      'selectedCountry',
-      JSON.stringify(this.selectedCountry)
-    );
-    this.getCountriesData(this.selectedCountry);
+    let selectedCountryItem =
+      JSON.parse(localStorage.getItem('selectedCountry')) || null;
+    if (this.commonChecksService.isNotNull(selectedCountryItem)) {
+      this.selectedCountry = selectedCountryItem
+        ? selectedCountryItem
+        : this.countriesList[0];
+      localStorage.setItem(
+        'selectedCountry',
+        JSON.stringify(this.selectedCountry)
+      );
+      this.getCountriesData(this.selectedCountry);
+    }
   }
 
   /**
@@ -75,18 +76,22 @@ export class StandingsComponent implements OnInit {
    * @param country
    */
   getCountriesData(country: Country) {
-    if(country){
+    if (country) {
       this.selectedCountryName = country?.name;
 
       this.selectedCountry = country;
-      localStorage.setItem('selectedCountry',JSON.stringify(this.selectedCountry));
+      localStorage.setItem(
+        'selectedCountry',
+        JSON.stringify(this.selectedCountry)
+      );
 
-      let leagueLocalId = JSON.parse(localStorage.getItem(`TopleagueId_${country.name}`))|| null;
+      let leagueLocalId =
+        JSON.parse(localStorage.getItem(`TopleagueId_${country.name}`)) || null;
 
       if (this.commonChecksService.isNotNull(leagueLocalId)) {
         this.getStandings(leagueLocalId, this.currentSeason);
       } else {
-        this.getLeagueId(country,leagueLocalId);
+        this.getLeagueId(country, leagueLocalId);
       }
     }
   }
