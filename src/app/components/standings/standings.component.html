@@ -1,30 +1,36 @@
-<table class="table table-bordered">
-    <thead>
-      <tr>
-        <th scope="col"></th>
-        <th scope="col"></th>
-        <th scope="col">Name</th>
-        <th scope="col">Games</th>
-        <th scope="col">W</th>
-        <th scope="col">L</th>
-        <th scope="col">D</th>
-        <th scope="col">Goals Difference</th>
-        <th scope="col">Points</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor='let stand of standings'>
-        <td>{{stand.rank}}</td>
-        <td><img [src]='stand.team.logo' style="width: 20px;height: 20px;"/></td>
-        <td><a routerLink="/teams/{{stand.team.id}}">{{stand.team.name}}</a></td>
-        <td>{{stand.all.played}}</td>
-        <td>{{stand.all.win}}</td>
-        <td>{{stand.all.draw}}</td>
-        <td>{{stand.all.lose}}</td>
-        <td>{{stand.goalsDiff}}</td>
-        <td>{{stand.points}}</td>
-      </tr>
-    </tbody>
-  </table>
+<app-dashboard
+  [topLeagueCountries]="countriesList"
+  (getCountriesData)="getCountriesData($event)"
+  [currentActiveCountry]="selectedCountryName"
+></app-dashboard>
 
-  
+<table class="table table-bordered" *ngIf="leagueStandingsList.length > 0">
+  <thead>
+    <tr>
+      <th scope="col"></th>
+      <th scope="col"></th>
+      <th scope="col">{{STANDING_CONSTANT.NAME}}</th>
+      <th scope="col">{{STANDING_CONSTANT.GAMES}}</th>
+      <th scope="col">{{STANDING_CONSTANT.WIN}}</th>
+      <th scope="col">{{STANDING_CONSTANT.LOOSE}}</th>
+      <th scope="col">{{STANDING_CONSTANT.DRAW}}</th>
+      <th scope="col">{{STANDING_CONSTANT.GOAL_DIFFERNCE}}</th>
+      <th scope="col">{{STANDING_CONSTANT.POINTS}}</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let standing of leagueStandingsList">
+      <td>{{ standing.rank }}</td>
+      <td><img [src]="standing.team.logo" class="logo"/></td>
+      <td>
+        <a class="defaultLink" routerLink="/teams/{{ standing.team.id }}">{{ standing.team.name }}</a>
+      </td>
+      <td>{{ standing.all.played }}</td>
+      <td>{{ standing.all.win }}</td>
+      <td>{{ standing.all.draw }}</td>
+      <td>{{ standing.all.lose }}</td>
+      <td>{{ standing.goalsDiff }}</td>
+      <td>{{ standing.points }}</td>
+    </tr>
+  </tbody>
+</table>

@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
 import { environment } from "../../environments/environment";
 
 @Injectable()
-export class AddHeaderInterceptor implements HttpInterceptor {
+export class AddKeyInterceptor implements HttpInterceptor {
 
   constructor() {}
 

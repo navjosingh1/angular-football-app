@@ -3,26 +3,30 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HomeComponent } from './components/home/home.component';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
-import { AddHeaderInterceptor } from '../app/interceptor/add-header-interceptor.interceptor';
+import { AddKeyInterceptor } from './interceptor/add-key-interceptor.interceptor';
 import { StandingsComponent } from './components/standings/standings.component';
-import { TeamsComponent } from './components/teams/teams.component'
+import { TeamsComponent } from './components/teams/teams.component';
+import { SpinnerComponent } from './shared/spinner/spinner.component';
+import { RouterModule } from '@angular/router';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    HomeComponent,
     StandingsComponent,
-    TeamsComponent
+    TeamsComponent,
+    SpinnerComponent,
+    DashboardComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
+    RouterModule
   ],
   providers: [{ 
-      provide: HTTP_INTERCEPTORS, useClass: AddHeaderInterceptor , multi:true
+      provide: HTTP_INTERCEPTORS, useClass: AddKeyInterceptor , multi:true
     },
   ],
   bootstrap: [AppComponent]
