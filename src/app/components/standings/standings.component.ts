@@ -26,7 +26,7 @@ export class StandingsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    let countries = JSON.parse(window.localStorage.getItem('countries')) || [];
+    let countries = JSON.parse(sessionStorage.getItem('countries')) || [];
     if (this.commonChecksService.isPopulatedArray(countries)) {
       this.countriesList = countries;
       this.loadLeagueStandings();
@@ -44,7 +44,7 @@ export class StandingsComponent implements OnInit {
         this.countriesList = data['response'].filter((country: Country) => {
           return Object.keys(TopEuropeanLeagues).indexOf(country.name) !== -1;
         });
-        localStorage.setItem('countries', JSON.stringify(this.countriesList));
+        sessionStorage.setItem('countries', JSON.stringify(this.countriesList));
         this.loadLeagueStandings();
       } else {
         this.errorMessage = data['errors']?.requests;
@@ -57,14 +57,14 @@ export class StandingsComponent implements OnInit {
    */
   loadLeagueStandings() {
     let selectedCountryItem =
-      JSON.parse(localStorage.getItem('selectedCountry')) || null;
+      JSON.parse(sessionStorage.getItem('selectedCountry')) || null;
 
     this.selectedCountry = this.commonChecksService.isNotNullOrUndefined(
       selectedCountryItem
     )
       ? selectedCountryItem
       : this.countriesList[0];
-    localStorage.setItem(
+    sessionStorage.setItem(
       'selectedCountry',
       JSON.stringify(this.selectedCountry)
     );
@@ -80,13 +80,14 @@ export class StandingsComponent implements OnInit {
       this.selectedCountryName = country?.name;
 
       this.selectedCountry = country;
-      localStorage.setItem(
+      sessionStorage.setItem(
         'selectedCountry',
         JSON.stringify(this.selectedCountry)
       );
 
       let leagueLocalId =
-        JSON.parse(localStorage.getItem(`TopleagueId_${country.name}`)) || null;
+        JSON.parse(sessionStorage.getItem(`TopleagueId_${country.name}`)) ||
+        null;
 
       if (this.commonChecksService.isNotNull(leagueLocalId)) {
         this.getStandings(leagueLocalId, this.currentSeason);
@@ -108,7 +109,7 @@ export class StandingsComponent implements OnInit {
       .subscribe((data) => {
         if (this.commonChecksService.isPopulatedArray(data['response'])) {
           leagueLocalId = data['response'][0]?.league.id;
-          localStorage.setItem(
+          sessionStorage.setItem(
             `TopleagueId_${country.name}`,
             JSON.stringify(leagueLocalId)
           );
@@ -127,7 +128,7 @@ export class StandingsComponent implements OnInit {
   getStandings(leagueId: number, currentSeason: number) {
     let standingsData =
       JSON.parse(
-        window.localStorage.getItem(`standings_${this.selectedCountry.name}`)
+        sessionStorage.getItem(`standings_${this.selectedCountry.name}`)
       ) || [];
 
     if (this.commonChecksService.isPopulatedArray(standingsData)) {
@@ -139,7 +140,7 @@ export class StandingsComponent implements OnInit {
           if (this.commonChecksService.isPopulatedArray(data['response'])) {
             this.leagueStandingsList =
               data['response'][0]?.league?.standings[0];
-            localStorage.setItem(
+            sessionStorage.setItem(
               `standings_${this.selectedCountry.name}`,
               JSON.stringify(this.leagueStandingsList)
             );

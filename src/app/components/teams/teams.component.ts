@@ -26,10 +26,11 @@ export class TeamsComponent implements OnInit {
     this.route.params.subscribe((params) => {
       this.teamId = params['teamId'];
     });
-    let selectedCountry = JSON.parse(localStorage.getItem('selectedCountry'));
+    let selectedCountry = JSON.parse(sessionStorage.getItem('selectedCountry'));
     let leagueId =
-      JSON.parse(localStorage.getItem(`TopleagueId_${selectedCountry.name}`)) ||
-      null;
+      JSON.parse(
+        sessionStorage.getItem(`TopleagueId_${selectedCountry.name}`)
+      ) || null;
 
     if (this.commonCheckService.isNotNull(leagueId)) {
       this.footballDataService.getfixtures(leagueId, this.teamId).subscribe(
