@@ -13,6 +13,7 @@ export class TeamsComponent implements OnInit {
   fixtures: Fixtures[];
   loading: boolean;
   errorMessage: string = '';
+  teamId: number;
 
   constructor(
     private footballDataService: FootballDataService,
@@ -22,14 +23,16 @@ export class TeamsComponent implements OnInit {
 
   ngOnInit(): void {
     this.loading = true;
-    let teamId = this.route.snapshot.params.teamId;
+    this.route.params.subscribe((params) => {
+      this.teamId = params['teamId'];
+    });
     let selectedCountry = JSON.parse(localStorage.getItem('selectedCountry'));
     let leagueId =
       JSON.parse(localStorage.getItem(`TopleagueId_${selectedCountry.name}`)) ||
       null;
 
     if (this.commonCheckService.isNotNull(leagueId)) {
-      this.footballDataService.getfixtures(leagueId, teamId).subscribe(
+      this.footballDataService.getfixtures(leagueId, this.teamId).subscribe(
         (data) => {
           this.loading = false;
           this.fixtures = data['response'];

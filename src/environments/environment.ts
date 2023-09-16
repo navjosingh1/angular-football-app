@@ -6,9 +6,9 @@ export const environment = {
   production: false,
   API_HOST_URL: 'https://v3.football.api-sports.io',
   //API_KEY: 'caa962e3a3bfca6c8da9f2662a8c495d',
-  //API_KEY: '43c4e4624ec5e731286a2a7308cd88e5'
+  //API_KEY: '43c4e4624ec5e731286a2a7308cd88e5',
   //API_KEY: '4afef8eb8694a72b399c11bc46f81452',
-  API_KEY: '3794ea91ff0b84bdaf99a49fac587a06',
+  API_KEY: 'b8316ee2e2f8ab992d82975501045988',
 };
 
 /*
