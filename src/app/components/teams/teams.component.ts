@@ -33,15 +33,12 @@ export class TeamsComponent implements OnInit {
       ) || null;
 
     if (this.commonCheckService.isNotNull(leagueId)) {
-      this.footballDataService.getfixtures(leagueId, this.teamId).subscribe(
-        (data) => {
+      this.footballDataService
+        .getfixtures(leagueId, this.teamId)
+        .subscribe((data) => {
           this.loading = false;
           this.fixtures = data['response'];
-        },
-        (error) => {
-          this.errorMessage = error;
-        }
-      );
+        });
     }
   }
 }
