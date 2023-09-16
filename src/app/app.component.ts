@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { GeneralConstant } from '../assets/constant';
 
 @Component({
@@ -9,7 +9,8 @@ import { GeneralConstant } from '../assets/constant';
 export class AppComponent {
   title = GeneralConstant.FOOTBALL_TITLE;
 
-  ngOnDestroy() {
-    localStorage.removeItem('selectedCountry');
+  @HostListener("window:onbeforeunload",["$event"])
+    clearLocalStorage(event){
+        localStorage.clear();
   }
 }

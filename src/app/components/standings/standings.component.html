@@ -25,9 +25,7 @@
       <td>{{ standing.rank }}</td>
       <td><img [src]="standing.team.logo" class="logo" /></td>
       <td>
-        <a class="defaultLink" routerLink="/teams/{{ standing.team.id }}">{{
-          standing.team.name
-        }}</a>
+        <a class="defaultLink" routerLink="/teams/{{ standing.team.id }}">{{standing.team.name }}</a>
       </td>
       <td>{{ standing.all.played }}</td>
       <td>{{ standing.all.win }}</td>
