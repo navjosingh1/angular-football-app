@@ -8,7 +8,7 @@ export const environment = {
   //API_KEY: 'caa962e3a3bfca6c8da9f2662a8c495d',
   //API_KEY: '43c4e4624ec5e731286a2a7308cd88e5',
   //API_KEY: '4afef8eb8694a72b399c11bc46f81452',
-  API_KEY: 'b8316ee2e2f8ab992d82975501045988',
+  API_KEY: '5b16c4337a7453c4788557fc56cf53b8',
 };
 
 /*
