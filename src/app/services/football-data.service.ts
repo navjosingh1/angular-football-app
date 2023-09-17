@@ -2,6 +2,10 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { GeneralConstant } from '../../assets/constant';
+import { Country } from '../interfaces/country';
+import { Observable } from 'rxjs';
+import { Standings } from '../interfaces/standings';
+import { Fixtures } from '../interfaces/fixtures';
 
 @Injectable({
   providedIn: 'root',
@@ -9,11 +13,18 @@ import { GeneralConstant } from '../../assets/constant';
 export class FootballDataService {
   constructor(private http: HttpClient) {}
 
-  getCountries() {
-    return this.http.get(`${environment.API_HOST_URL}/teams/countries`);
+  getCountries(): Observable<Country> {
+    return this.http.get<Country>(
+      `${environment.API_HOST_URL}/teams/countries`
+    );
   }
 
-  getLeaguesId(countryCode, season, leagueName, countryName) {
+  getLeaguesId(
+    countryCode: string,
+    season: number,
+    leagueName: number,
+    countryName: string
+  ): Observable<Object> {
     const params = new HttpParams()
       .set('code', countryCode)
       .set('season', season)
@@ -24,21 +35,21 @@ export class FootballDataService {
     });
   }
 
-  getStandings(leagueId, season) {
+  getStandings(leagueId: number, season: number): Observable<Standings> {
     const params = new HttpParams()
       .set('league', leagueId)
       .set('season', season);
-    return this.http.get(`${environment.API_HOST_URL}/standings`, {
+    return this.http.get<Standings>(`${environment.API_HOST_URL}/standings`, {
       params: params,
     });
   }
 
-  getfixtures(leagueId, teamId) {
+  getfixtures(leagueId: number, teamId: number): Observable<Fixtures> {
     const params = new HttpParams()
       .set('league', leagueId)
       .set('team', teamId)
       .set('last', GeneralConstant.TEN);
-    return this.http.get(`${environment.API_HOST_URL}/fixtures`, {
+    return this.http.get<Fixtures>(`${environment.API_HOST_URL}/fixtures`, {
       params: params,
     });
   }
