@@ -18,7 +18,7 @@ export class StandingsComponent implements OnInit {
   selectedCountry: Country;
 
   readonly STANDING_CONSTANT = StandingsConst;
-  currentSeason: number = new Date().getFullYear();
+  currentSeason: string = (new Date().getFullYear()).toString();
 
   constructor(
     private footballDataService: FootballDataService,
@@ -113,7 +113,7 @@ export class StandingsComponent implements OnInit {
             `TopleagueId_${country.name}`,
             JSON.stringify(leagueLocalId)
           );
-          this.getStandings(leagueLocalId, this.currentSeason);
+          this.getStandings((leagueLocalId).toString(), this.currentSeason);
         } else {
           this.errorMessage = data['errors']?.requests;
         }
@@ -125,7 +125,7 @@ export class StandingsComponent implements OnInit {
    * @param leagueId
    * @param currentSeason
    */
-  getStandings(leagueId: number, currentSeason: number) {
+  getStandings(leagueId: string, currentSeason: string) {
     let standingsData =
       JSON.parse(
         sessionStorage.getItem(`standings_${this.selectedCountry.name}`)

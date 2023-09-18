@@ -13,7 +13,7 @@ export class TeamsComponent implements OnInit {
   fixtures: Fixtures[];
   loading: boolean;
   errorMessage: string = '';
-  teamId: number;
+  teamId: string;
 
   constructor(
     private footballDataService: FootballDataService,

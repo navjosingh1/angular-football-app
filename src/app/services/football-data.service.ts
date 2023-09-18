@@ -21,7 +21,7 @@ export class FootballDataService {
 
   getLeaguesId(
     countryCode: string,
-    season: number,
+    season: string,
     leagueName: string,
     countryName: string
   ): Observable<Object> {
@@ -35,7 +35,7 @@ export class FootballDataService {
     });
   }
 
-  getStandings(leagueId: number, season: number): Observable<Standings> {
+  getStandings(leagueId: string, season: string): Observable<Standings> {
     const params = new HttpParams()
       .set('league', leagueId)
       .set('season', season);
@@ -44,7 +44,7 @@ export class FootballDataService {
     });
   }
 
-  getfixtures(leagueId: number, teamId: number): Observable<Fixtures> {
+  getfixtures(leagueId: string, teamId: string): Observable<Fixtures> {
     const params = new HttpParams()
       .set('league', leagueId)
       .set('team', teamId)
