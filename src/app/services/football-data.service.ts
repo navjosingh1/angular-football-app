@@ -22,7 +22,7 @@ export class FootballDataService {
   getLeaguesId(
     countryCode: string,
     season: number,
-    leagueName: number,
+    leagueName: string,
     countryName: string
   ): Observable<Object> {
     const params = new HttpParams()
